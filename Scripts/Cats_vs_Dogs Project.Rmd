@@ -268,7 +268,7 @@ Cats?
 .pull-right[
 Dogs? 
 
-<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 30%" />]
+<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 20%" />]
   
 --
 
