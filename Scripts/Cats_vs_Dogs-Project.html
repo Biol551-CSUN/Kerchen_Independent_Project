@@ -28,7 +28,7 @@ class: center, middle, inverse, title-slide
 ### BIOL 551
 ]
 .date[
-### 2016/12/12 (updated: 2023-05-05)
+### 2016/12/12 (updated: 2023-05-08)
 ]
 
 ---
@@ -59,7 +59,19 @@ library(kableExtra)
 
 
 ```r
-CatvDog_Data &lt;- read.csv(here("Independent Project", "Data", "cats_vs_dogs.csv"))
+CatvDog_Data &lt;- read_csv(here("Data", "cats_vs_dogs.csv"))
+```
+
+```
+## New names:
+## Rows: 49 Columns: 13
+## ── Column specification
+## ──────────────────────────────────────────────────────── Delimiter: "," chr
+## (1): state dbl (12): ...1, n_households, percent_pet_households,
+## n_pet_households, perc...
+## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+## Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## • `` -&gt; `...1`
 ```
 ---
 
@@ -212,21 +224,28 @@ CatvDog_Data_Bar %&gt;%
 .center[![Inputs](libs/images/DogsWin.jpg)]
 ---
 
-# Statistics for Dogs vs. Cats
+# More State Comparisons for Dogs vs. Cats
 
-
-- I averaged the populations of both dogs and cats for all 48 states.
-
---
-
-- I also averaged out the average number of dogs and cats per household for every state.
+- I decided to compare the three most populous states (California, Texas, and Florida) to the three least populous states (Wyoming, Vermont, and North Dakota).
 
 --
+
+- I compared the populations, number of households, and the average number within the households of both cats and dogs.
 
 
 ```r
-knitr::kable(CatvDog_Data_Stats, format = 'html',
-             col.names = c("File Name", "Mean Cat Population", "Mean Dog Population", "Average Cats per Household", "Average Dogs per Household")) %&gt;%
+CatvDog_Stats &lt;- CatvDog_Data %&gt;%
+  filter(state %in% c("California", "Texas", "Florida", "Wyoming", "Vermont", "North Dakota")) %&gt;%
+  select(state, n_cat_households, n_dog_households, cat_population, dog_population, avg_cats_per_household, avg_dogs_per_household)
+```
+
+---
+# More State Comparisons for Dogs vs. Cats
+
+
+```r
+knitr::kable(CatvDog_Stats, format = 'html',
+             col.names = c("State", "Number of Cat Households", "Number of Dog Households", "Cat Population", "Dog Population", "Average Cats per Household", "Average Dogs per Household")) %&gt;%
   kable_styling(position = "left", full_width = FALSE) %&gt;%
   column_spec(1, bold = TRUE, border_right = TRUE, color = "black", background = "lightgrey") %&gt;%
   row_spec(0, background  = "turquoise")
@@ -235,31 +254,108 @@ knitr::kable(CatvDog_Data_Stats, format = 'html',
 &lt;table class="table" style="width: auto !important; "&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:left;background-color: turquoise !important;"&gt; File Name &lt;/th&gt;
-   &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Mean Cat Population &lt;/th&gt;
-   &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Mean Dog Population &lt;/th&gt;
+   &lt;th style="text-align:left;background-color: turquoise !important;"&gt; State &lt;/th&gt;
+   &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Number of Cat Households &lt;/th&gt;
+   &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Number of Dog Households &lt;/th&gt;
+   &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Cat Population &lt;/th&gt;
+   &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Dog Population &lt;/th&gt;
    &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Average Cats per Household &lt;/th&gt;
    &lt;th style="text-align:right;background-color: turquoise !important;"&gt; Average Dogs per Household &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; cats_vs_dogs.csv &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1492.796 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1414.163 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.587755 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.040816 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; California &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3687 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4260 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7118 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6687 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; Florida &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2079 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4375 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4210 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; North Dakota &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 139 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; Texas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2544 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3960 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5565 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7163 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; Vermont &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 131 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 234 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 142 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: lightgrey !important;border-right:1px solid;"&gt; Wyoming &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 144 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 125 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
+---
+# More States Comparisons for Cats vs. Dogs
+
+- As expected, states with larger populations have larger cat and dog populations as well as number of households.
+
 --
 
-- Cats have a larger overall population despite having less households.
+- However, the avergae amount of cats and dogs per household is fairly consistent in each state depite the difference in population size within the states.
+
+---
+# Cat vs. Dogs
+
+- Which do you prefer?
 
 --
 
-- People seem to own around 1-2 cats and 2 dogs per household.
+.pull-left[
+Cats? 
+  
+  &lt;img src="https://i.redd.it/v95cjf4iau231.jpg" + url + style="width: 40%" /&gt;]
+  
+--
+
+.pull-right[
+Dogs? 
+
+&lt;img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 30%" /&gt;]
+  
+--
+
+.center[
+Both? 
+ 
+ &lt;img src="https://cdn.shopify.com/s/files/1/0601/4169/files/Meme4_large.jpg" + url + style="width: 20%" /&gt;]
+  
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

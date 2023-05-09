@@ -38,7 +38,7 @@ library(kableExtra)
 --
 
 ```{r}
-CatvDog_Data <- read.csv(here("Independent Project", "Data", "cats_vs_dogs.csv"))
+CatvDog_Data <- read_csv(here("Data", "cats_vs_dogs.csv"))
 ```
 ---
 
@@ -65,10 +65,17 @@ plot_usmap(data = CatvDog_Data,
   scale_fill_continuous(low = "white", high = "blue", name = "Percentage of Cat Owners")
 ```
 ]
+```{r CatPercentPlot, echo=FALSE, message=FALSE, warning=FALSE}
+ggsave(here("Output", "CatPercentPlot.jpg"),
+       width = 8, height = 8)
+```
+
 .pull-right[
 ```{r CatPercentPlot-out, ref.label="CatPercentPlot", echo=FALSE, message=FALSE, warning=FALSE}
 ```
 ]
+
+
 ---
 
 # Dog Owner Percentage in the U.S.
@@ -92,13 +99,20 @@ plot_usmap(data = CatvDog_Data,           # Plots a flat map of the US.
        subtitle = "Percentage of Dog Owners by State")+
   theme(panel.background = element_blank(),             # Makes the map blank inside and put the legend to the right.
         legend.position = "right")+
-  scale_fill_continuous(low = "white", high = "red", name = "Percentage of Dog Owners")    # Gives a gradient effect in order of how high or low the percentage is.
+  scale_fill_continuous(low = "white", high = "red", name = "Percentage of Dog Owners")   # Gives a gradient effect in order of how high or low the percentage is.
 ```
+
 ]
 .pull.right[
 ```{r DogPercentPlot-out, ref.label="DogPercentPlot", echo=FALSE, message=FALSE, warning=FALSE}
 ```
 ]
+
+
+```{r DogPercentPlot, echo=FALSE, message=FALSE, warning=FALSE}
+ggsave(here("Output", "DogPercentPlot.jpg"),
+       width = 8, height = 8)
+```
 
 ---
 
@@ -163,6 +177,11 @@ CatvDog_Data_Bar %>%
 ```
 ]
 
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggsave(here("Output", "CatvDogBar.jpg"),
+       width = 9, height = 9)
+```
+
 ---
 
 # Dog vs. Cat Households by State
@@ -190,68 +209,64 @@ CatvDog_Data_Bar %>%
 .center[![Inputs](libs/images/DogsWin.jpg)]
 ---
 
-# Statistics for Dogs vs. Cats
+# More State Comparisons for Dogs vs. Cats
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
-CvDPath <- here("Independent Project", "Data") # Points a path to the location of the folder
+- I decided to compare the three most populous states (California, Texas, and Florida) to the three least populous states (Wyoming, Vermont, and North Dakota).
 
-files <- dir(path = CvDPath,pattern = ".csv") # Lists all the files in that path with a specific pattern
+--
 
-files
+- I compared the populations, number of households, and the average number within the households of both cats and dogs.
 
-CatvDog_Data_Stats<-data.frame(matrix(nrow = 1, ncol = 5)) # Makes an empty data frame to pre-allocate space
-
-colnames(CatvDog_Data_Stats) <- c("filename","mean_cat_population", "mean_dog_population", "avg_dogs_per_household", "avg_cats_per_household") # Gives column names to the data frame
-
-CatvDog_Data_Stats
-
-for (i in 1:length(files)){ # Loop over 1:5 the number of files 
-  Raw_Data<-read_csv(paste0(CvDPath,"/",files[i]))
-  CatvDog_Data_Stats$filename[i]<-files[i]
-  CatvDog_Data_Stats$mean_cat_population[i]<-mean(Raw_Data$cat_population, na.rm =TRUE) # Calculates the mean temperature
-  CatvDog_Data_Stats$mean_dog_population[i]<-mean(Raw_Data$dog_population, na.rm =TRUE) # Calculates the mean light intensity
-  CatvDog_Data_Stats$avg_dogs_per_household[i] <- mean(Raw_Data$avg_dogs_per_household, na.rm = TRUE) # Calculates the standard deviation of temperature
-  CatvDog_Data_Stats$avg_cats_per_household[i] <- mean(Raw_Data$avg_cats_per_household, na.rm = TRUE) # Calculates the standard deviation of light intensity
-}
-
-
+```{r, message=FALSE, warning=FALSE}
+CatvDog_Stats <- CatvDog_Data %>%
+  filter(state %in% c("California", "Texas", "Florida", "Wyoming", "Vermont", "North Dakota")) %>%
+  select(state, n_cat_households, n_dog_households, cat_population, dog_population, avg_cats_per_household, avg_dogs_per_household)
 ```
-- I averaged the populations of both dogs and cats for all 48 states.
 
---
-
-- I also averaged out the average number of dogs and cats per household for every state.
-
---
+---
+# More State Comparisons for Dogs vs. Cats
 
 ```{r}
-knitr::kable(CatvDog_Data_Stats, format = 'html',
-             col.names = c("File Name", "Mean Cat Population", "Mean Dog Population", "Average Cats per Household", "Average Dogs per Household")) %>%
+knitr::kable(CatvDog_Stats, format = 'html',
+             col.names = c("State", "Number of Cat Households", "Number of Dog Households", "Cat Population", "Dog Population", "Average Cats per Household", "Average Dogs per Household")) %>%
   kable_styling(position = "left", full_width = FALSE) %>%
   column_spec(1, bold = TRUE, border_right = TRUE, color = "black", background = "lightgrey") %>%
   row_spec(0, background  = "turquoise")
 ```
 
+---
+# More States Comparisons for Cats vs. Dogs
+
+- As expected, states with larger populations have larger cat and dog populations as well as number of households.
+
 --
 
-- Cats have a larger overall population despite having less households.
-
---
-
-- People seem to own around 1-2 cats and 2 dogs per household.
+- However, the avergae amount of cats and dogs per household is fairly consistent in each state depite the difference in population size within the states.
 
 ---
 # Cat vs. Dogs
 
 - Which do you prefer?
 
-  - Cats?
+--
+
+.pull-left[
+Cats? 
   
+  <img src="https://i.redd.it/v95cjf4iau231.jpg" + url + style="width: 40%" />]
   
-  - Dogs?
+--
+
+.pull-right[
+Dogs? 
+
+<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 30%" />]
   
+--
+
+.center[
+Both? 
+ 
+ <img src="https://cdn.shopify.com/s/files/1/0601/4169/files/Meme4_large.jpg" + url + style="width: 20%" />]
   
-  - Both?
-  
-  
-  - Neither?
+
