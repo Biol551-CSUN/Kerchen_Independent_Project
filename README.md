@@ -2,9 +2,13 @@
 
 # Cats vs Dogs
 
-<img src="https://i.redd.it/v95cjf4iau231.jpg" + url + style="width: 40%" />
+#### Cats
+<img src="https://i0.wp.com/katzenworld.co.uk/wp-content/uploads/2019/06/funny-cat.jpeg" alt="cute cat" width="250" height ="250">
 
-<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 20%" />
+**VS**
+
+#### Dogs
+<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" alt ="froggo doggo" width="250" height = "250">
 
 ## Background Information
 
