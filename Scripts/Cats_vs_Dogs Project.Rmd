@@ -34,7 +34,7 @@ library(webshot)
 
 --
 
-- The data frame includes cat and dog population and ownership data from the United States.
+- The data set includes cat and dog population and ownership data from the United States. It only includes data for 49 states.
 
 --
 
@@ -55,7 +55,7 @@ CatvDog_Data <- read_csv(here("Data", "cats_vs_dogs.csv"))
 
 --
 
-- This plot only contains data for the continental states due to lacking data for Alaska and Hawaii.
+- This plot only contains data for the 49 continental states due to lacking data for Alaska and Hawaii.
 
 --
 .pull-left[
@@ -91,7 +91,7 @@ plot_usmap(data = CatvDog_Data,   # Plots a flat map of the US.
 
 --
 
-- Like the plot before, this plot only contains data for the continental states due to lacking data for Alaska and Hawaii.
+- Like the plot before, this plot only contains data for the 49 continental states due to lacking data for Alaska and Hawaii.
 
 --
 
@@ -130,11 +130,11 @@ plot_usmap(data = CatvDog_Data,           # Plots a flat map of the US.
 
 --
 
-- I mutated the data frame to subtract the number of dog households from the number of cat households.
+- I mutated the data to subtract the number of dog households from the number of cat households.
 
 --
 
-- The diverging plot shows whether the state has more dog or cat households.
+- The diverging plot shows whether the state has either more dog households or more cat households.
 
 --
 
@@ -247,11 +247,11 @@ knitr::kable(CatvDog_Stats, format = 'html',
 ---
 # More States Comparisons for Cats vs. Dogs
 
-- As expected, states with larger populations have larger cat and dog populations as well as number of households.
+- As expected, states with larger populations have larger cat and dog populations as well as a higher number of households.
 
 --
 
-- However, the average amount of cats and dogs per household is fairly consistent in each state despite the difference in population size within the states.
+- However, the average amount of cats and dogs per household is fairly consistent in all of the states despite the difference in population size within the states.
 
 
 ---
