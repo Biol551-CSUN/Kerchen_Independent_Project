@@ -2,12 +2,12 @@ name,plot_name,class,description
 state,State,Character,The particular state within the United States that the data was collected in. There are 49 states total excluding Hawaii and Alaska.
 n_households,Number of Households,Numeric,The number of households within the state.
 percent_pet_households,Percentage of Pet Households,Numeric,The percentage of pet households within the state.
-n_pet_households,Number of Pet Households,Numeric,The number of pet households that reside in the state.
+n_pet_households,Number of Pet Households,Numeric,The number of pet households that reside within the state.
 percent_dog_owners,Percentage of Dog Owners,Numeric,The percentage of dog owners in the state.
-n_dog_households,Number of Dog Households,Numeric,The number of dog households that reside within the state.
-avg_dogs_per_household,Average Dogs Per Household,Numeric,The average number of dogs that live in each household within the state.
+n_dog_households,Number of Dog Households,Numeric,The number of dog owning households that reside within the state.
+avg_dogs_per_household,Average Dogs Per Household,Numeric,The average number of dogs that are owned in each dog household within the state.
 dog_population,Dog Population,Numeric,The dog population in the state.
 percent_cat_owners,Percentage of Cat Owners,Numeric,The percentage of cat owners in the state.
-n_cat_households,Number of Cat Households,Numeric,The number of cat households that reside within the state.
-avg_cats_per_household,Average Cats Per Household,Numeric,The average number of cats that live in each household within the state.
+n_cat_households,Number of Cat Households,Numeric,The number of cat owning households that reside within the state.
+avg_cats_per_household,Average Cats Per Household,Numeric,The average number of cats that are owned in each cat household within the state.
 cat_population,Cat Population,Numeric,The cat population in the state.

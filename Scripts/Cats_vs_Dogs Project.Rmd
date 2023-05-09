@@ -79,6 +79,7 @@ plot_usmap(data = CatvDog_Data,   # Plots a flat map of the US.
 
 .pull-right[
 ```{r CatPercentPlot-out, ref.label="CatPercentPlot", echo=FALSE, message=FALSE, warning=FALSE}
+# Just shows the plot and pulls it to the right so it can be shown side by side with the code.
 ```
 ]
 
@@ -111,6 +112,7 @@ plot_usmap(data = CatvDog_Data,           # Plots a flat map of the US.
 ]
 .pull.right[
 ```{r DogPercentPlot-out, ref.label="DogPercentPlot", echo=FALSE, message=FALSE, warning=FALSE}
+# Just shows the plot and pulls it to the right so it can be shown side by side with the code.
 ```
 ]
 
@@ -180,6 +182,7 @@ CatvDog_Data_Bar %>%
 
 .pull-right[
 ```{r CatvDogBar-out, ref.label="CatvDogBar", echo=FALSE, message=FALSE, warning=FALSE}
+# Just shows the plot and pulls it to the right so it can be shown side by side with the code.
 ```
 ]
 
@@ -252,29 +255,30 @@ knitr::kable(CatvDog_Stats, format = 'html',
 
 
 ---
-# Cat vs. Dogs
-
-- Which do you prefer?
+# Which do you prefer?
 
 --
 
 .pull-left[
-Cats? 
-  
-  <img src="https://i.redd.it/v95cjf4iau231.jpg" + url + style="width: 40%" />]
+Cats?
+
+<img src="https://i.redd.it/v95cjf4iau231.jpg" + url + style="width: 50%" />]
   
 --
 
 .pull-right[
+
 Dogs? 
 
-<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 20%" />]
+<img src="https://images.8tracks.com/cover/i/009/375/915/doge_pepe-3775.jpg" + url + style="width: 40%" />]
   
---
+---
+# Which do you prefer?
 
-.center[
-Both? 
- 
- <img src="https://cdn.shopify.com/s/files/1/0601/4169/files/Meme4_large.jpg" + url + style="width: 20%" />]
+.pull-left[
+
+Both?
+
+<img src="https://cdn.shopify.com/s/files/1/0601/4169/files/Meme4_large.jpg" + url + style="width: 70%" />]
   
 
