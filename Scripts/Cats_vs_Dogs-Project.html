@@ -28,7 +28,7 @@ class: center, middle, inverse, title-slide
 ### BIOL 551
 ]
 .date[
-### 2016/12/12 (updated: 2023-05-08)
+### 2016/12/12 (updated: 2023-05-09)
 ]
 
 ---
@@ -43,6 +43,7 @@ library(here)
 library(usmap)
 library(reshape2)
 library(kableExtra)
+library(webshot)
 ```
 
 ---
@@ -53,25 +54,19 @@ library(kableExtra)
 
 --
 
-- The data frame includes cat and dog owner data from the United States
+- The data frame includes cat and dog population and ownership data from the United States.
 
 --
+
+- It was uploaded to the Tidy Tuesday Repository in 2018, but was originally uploaded on data.world in 2016.
+
+--
+
+- The data was collected from the American Veterinary Medical Association (AVMA).
 
 
 ```r
 CatvDog_Data &lt;- read_csv(here("Data", "cats_vs_dogs.csv"))
-```
-
-```
-## New names:
-## Rows: 49 Columns: 13
-## ── Column specification
-## ──────────────────────────────────────────────────────── Delimiter: "," chr
-## (1): state dbl (12): ...1, n_households, percent_pet_households,
-## n_pet_households, perc...
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-## Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## • `` -&gt; `...1`
 ```
 ---
 
@@ -87,21 +82,24 @@ CatvDog_Data &lt;- read_csv(here("Data", "cats_vs_dogs.csv"))
 .pull-left[
 
 ```r
-plot_usmap(data = CatvDog_Data,           
-           values = "percent_cat_owners",  
+plot_usmap(data = CatvDog_Data,   # Plots a flat map of the US.        
+           values = "percent_cat_owners",  # Uses the data set and plots the percentage data.
            regions = "states",
-           exclude = c("AK", "HI"),       
+           exclude = c("AK", "HI"),    # Excluding Alaska and Hawaii from the map since there is no data for them   
            color = "black")+
-  labs(title = "Cat Owners of the United States",         
+  labs(title = "Cat Owners of the United States",        # Adds titles to the plot. 
        subtitle = "Percentage of Cat Owners by State")+
-  theme(panel.background = element_blank(),             
+  theme(panel.background = element_blank(),    # Makes the map blank inside and put the legend to the right.         
         legend.position = "right")+
-  scale_fill_continuous(low = "white", high = "blue", name = "Percentage of Cat Owners")
+  scale_fill_continuous(low = "white", high = "blue", name = "Percentage of Cat Owners")  # Gives a gradient effect in order of how high or low the percentage is.
 ```
 ]
+
+
 .pull-right[
 ![](Cats_vs_Dogs-Project_files/figure-html/CatPercentPlot-out-1.png)&lt;!-- --&gt;
 ]
+
 ---
 
 # Dog Owner Percentage in the U.S.
@@ -126,12 +124,16 @@ plot_usmap(data = CatvDog_Data,           # Plots a flat map of the US.
        subtitle = "Percentage of Dog Owners by State")+
   theme(panel.background = element_blank(),             # Makes the map blank inside and put the legend to the right.
         legend.position = "right")+
-  scale_fill_continuous(low = "white", high = "red", name = "Percentage of Dog Owners")    # Gives a gradient effect in order of how high or low the percentage is.
+  scale_fill_continuous(low = "white", high = "red", name = "Percentage of Dog Owners")   # Gives a gradient effect in order of how high or low the percentage is.
 ```
+
 ]
 .pull.right[
 ![](Cats_vs_Dogs-Project_files/figure-html/DogPercentPlot-out-1.png)&lt;!-- --&gt;
 ]
+
+
+
 
 ---
 
@@ -154,9 +156,9 @@ plot_usmap(data = CatvDog_Data,           # Plots a flat map of the US.
 
 ```r
 CatvDog_Data_Bar &lt;- CatvDog_Data %&gt;%
-  mutate(value = n_dog_households - n_cat_households)
+  mutate(value = n_dog_households - n_cat_households)  # Subtracts the number of dog households from the number of cat households for all of the states. Places them ina new column named 'Value'
 
-color &lt;- ifelse(CatvDog_Data_Bar$value &lt; 0, "red", "blue")
+color &lt;- ifelse(CatvDog_Data_Bar$value &lt; 0, "red", "blue")  # Assigns the volor blue to values less than zero and assigns red to those above 0.
 ```
 
 ---
@@ -197,6 +199,8 @@ CatvDog_Data_Bar %&gt;%
 ![](Cats_vs_Dogs-Project_files/figure-html/CatvDogBar-out-1.png)&lt;!-- --&gt;
 ]
 
+
+
 ---
 
 # Dog vs. Cat Households by State
@@ -235,8 +239,8 @@ CatvDog_Data_Bar %&gt;%
 
 ```r
 CatvDog_Stats &lt;- CatvDog_Data %&gt;%
-  filter(state %in% c("California", "Texas", "Florida", "Wyoming", "Vermont", "North Dakota")) %&gt;%
-  select(state, n_cat_households, n_dog_households, cat_population, dog_population, avg_cats_per_household, avg_dogs_per_household)
+  filter(state %in% c("California", "Texas", "Florida", "Wyoming", "Vermont", "North Dakota")) %&gt;% # Filters the data by the states chosen. 
+  select(state, n_cat_households, n_dog_households, cat_population, dog_population, avg_cats_per_household, avg_dogs_per_household) # Allows me to select the specific columns that I want to show in the data.
 ```
 
 ---
@@ -245,10 +249,10 @@ CatvDog_Stats &lt;- CatvDog_Data %&gt;%
 
 ```r
 knitr::kable(CatvDog_Stats, format = 'html',
-             col.names = c("State", "Number of Cat Households", "Number of Dog Households", "Cat Population", "Dog Population", "Average Cats per Household", "Average Dogs per Household")) %&gt;%
-  kable_styling(position = "left", full_width = FALSE) %&gt;%
-  column_spec(1, bold = TRUE, border_right = TRUE, color = "black", background = "lightgrey") %&gt;%
-  row_spec(0, background  = "turquoise")
+             col.names = c("State", "Number of Cat Households", "Number of Dog Households", "Cat Population", "Dog Population", "Average Cats per Household", "Average Dogs per Household")) %&gt;% # Gives nicer column names to the table.
+  kable_styling(position = "left", full_width = FALSE) %&gt;%  # Positions the table to the left and makes it so it is not full width.
+  column_spec(1, bold = TRUE, border_right = TRUE, color = "black", background = "lightgrey") %&gt;% # Bolds the column titles and makes them black. Makes the background of the column a light grey.
+  row_spec(0, background  = "turquoise") #%&gt;% # Colors the first row of the table with all of the titles turquoise
 ```
 
 &lt;table class="table" style="width: auto !important; "&gt;
@@ -320,6 +324,10 @@ knitr::kable(CatvDog_Stats, format = 'html',
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+
+```r
+  #save_kable(file = "CatvDogTable.jpg")  # Saves the table as a .jpg file using webshot.
+```
 
 ---
 # More States Comparisons for Cats vs. Dogs
