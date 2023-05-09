@@ -1,0 +1,257 @@
+---
+title: "Independent Project"
+subtitle: "Comparison of Cat and Dog Owners Across the United States"
+author: "Mikayla Kerchen"
+institute: "BIOL 551"
+date: "2016/12/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Load Libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(here)
+library(usmap)
+library(reshape2)
+library(kableExtra)
+```
+
+---
+
+# Introduction to the Data Set
+
+- The data was received from the Tidy Tuesday Repository
+
+--
+
+- The data frame includes cat and dog owner data from the United States
+
+--
+
+```{r}
+CatvDog_Data <- read.csv(here("Independent Project", "Data", "cats_vs_dogs.csv"))
+```
+---
+
+# Cat Owner Percentage in the U.S.
+
+- This plot illustrates the percentage of cat owners in the United States.
+
+--
+
+- This plot only contains data for the continental states due to lacking data for Alaska and Hawaii.
+
+--
+.pull-left[
+```{r CatPercentPlot, eval= FALSE, message=FALSE}
+plot_usmap(data = CatvDog_Data,           
+           values = "percent_cat_owners",  
+           regions = "states",
+           exclude = c("AK", "HI"),       
+           color = "black")+
+  labs(title = "Cat Owners of the United States",         
+       subtitle = "Percentage of Cat Owners by State")+
+  theme(panel.background = element_blank(),             
+        legend.position = "right")+
+  scale_fill_continuous(low = "white", high = "blue", name = "Percentage of Cat Owners")
+```
+]
+.pull-right[
+```{r CatPercentPlot-out, ref.label="CatPercentPlot", echo=FALSE, message=FALSE, warning=FALSE}
+```
+]
+---
+
+# Dog Owner Percentage in the U.S.
+
+- This plot illustrates the percentage of dog owners in the United States.
+
+--
+
+- Like the plot before, this plot only contains data for the continental states due to lacking data for Alaska and Hawaii.
+
+--
+
+.pull-left[
+```{r DogPercentPlot, eval= FALSE, message=FALSE}
+plot_usmap(data = CatvDog_Data,           # Plots a flat map of the US.
+           values = "percent_dog_owners",  # Uses the data set and plots the percentage data.
+           regions = "states",
+           exclude = c("AK", "HI"),       # Excluding Alaska and Hawaii from the map since there is no data for them.
+           color = "black")+
+  labs(title = "Dog Owners of the United States",         # Adds titles to the plot.
+       subtitle = "Percentage of Dog Owners by State")+
+  theme(panel.background = element_blank(),             # Makes the map blank inside and put the legend to the right.
+        legend.position = "right")+
+  scale_fill_continuous(low = "white", high = "red", name = "Percentage of Dog Owners")    # Gives a gradient effect in order of how high or low the percentage is.
+```
+]
+.pull.right[
+```{r DogPercentPlot-out, ref.label="DogPercentPlot", echo=FALSE, message=FALSE, warning=FALSE}
+```
+]
+
+---
+
+# Dog vs. Cat Households by State
+
+- This next plot is a diverging bar plot that compares the number of dog and cat households per state.
+
+--
+
+- I mutated the data frame to subtract the number of dog households from the number of cat households.
+
+--
+
+- The diverging plot shows whether the state has more dog or cat households.
+
+--
+
+  - Dog households are colored red while cat households are colored blue.
+
+```{r}
+CatvDog_Data_Bar <- CatvDog_Data %>%
+  mutate(value = n_dog_households - n_cat_households)
+
+color <- ifelse(CatvDog_Data_Bar$value < 0, "red", "blue")
+```
+
+---
+
+# Dog vs. Cat Households by State
+
+.pull-left[
+```{r CatvDogBar, eval=FALSE, message=FALSE}
+CatvDog_Data_Bar %>%     
+  ggplot(aes(x = reorder(state, value), # Reorders the plot from most to least value
+             y = value))+
+  geom_bar(aes(fill = color), stat = "identity")+  # Fills the plot with the colors from the ifelse statement
+  coord_flip()+   # Flips the coordinate plane
+  labs(x = "State",   # Gives pretty labels to the plot
+       y = "Number of Households",
+       fill = "Type of Household",
+       title = "Cats vs. Dogs in the U.S.",
+       subtitle = "Categorized per State")+  
+  theme_minimal()+  # Minimal theme.
+  scale_fill_discrete(labels = c("Dog", "Cat"))+  # Re-labels the legend with prettier names (ex: instead of 'blue' and 'red')
+  theme(plot.title = element_text(size = 16,     # Changes the size, color, face, and adjusts the title and subtitle.
+                                  color = "black",
+                                  face = 'bold',
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 14,
+                                     color = "black",
+                                     face = 'italic',
+                                     hjust = 0.5),
+        axis.title = element_text(size = 12,      # Changes the size and color of the axis and legend titles.
+                                  color = "black"),
+        legend.title = element_text(size = 12,
+                                    color = "black"))
+```
+]
+
+.pull-right[
+```{r CatvDogBar-out, ref.label="CatvDogBar", echo=FALSE, message=FALSE, warning=FALSE}
+```
+]
+
+---
+
+# Dog vs. Cat Households by State
+
+- From the plot, it appears that more states have more households with dogs compared to cats.
+
+--
+
+  - Except for a few states: 
+
+--
+
+  - Massachusetts
+    
+--
+
+  - Washington
+  
+--
+
+  - and some other states
+  
+--
+
+.center[![Inputs](libs/images/DogsWin.jpg)]
+---
+
+# Statistics for Dogs vs. Cats
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+CvDPath <- here("Independent Project", "Data") # Points a path to the location of the folder
+
+files <- dir(path = CvDPath,pattern = ".csv") # Lists all the files in that path with a specific pattern
+
+files
+
+CatvDog_Data_Stats<-data.frame(matrix(nrow = 1, ncol = 5)) # Makes an empty data frame to pre-allocate space
+
+colnames(CatvDog_Data_Stats) <- c("filename","mean_cat_population", "mean_dog_population", "avg_dogs_per_household", "avg_cats_per_household") # Gives column names to the data frame
+
+CatvDog_Data_Stats
+
+for (i in 1:length(files)){ # Loop over 1:5 the number of files 
+  Raw_Data<-read_csv(paste0(CvDPath,"/",files[i]))
+  CatvDog_Data_Stats$filename[i]<-files[i]
+  CatvDog_Data_Stats$mean_cat_population[i]<-mean(Raw_Data$cat_population, na.rm =TRUE) # Calculates the mean temperature
+  CatvDog_Data_Stats$mean_dog_population[i]<-mean(Raw_Data$dog_population, na.rm =TRUE) # Calculates the mean light intensity
+  CatvDog_Data_Stats$avg_dogs_per_household[i] <- mean(Raw_Data$avg_dogs_per_household, na.rm = TRUE) # Calculates the standard deviation of temperature
+  CatvDog_Data_Stats$avg_cats_per_household[i] <- mean(Raw_Data$avg_cats_per_household, na.rm = TRUE) # Calculates the standard deviation of light intensity
+}
+
+
+```
+- I averaged the populations of both dogs and cats for all 48 states.
+
+--
+
+- I also averaged out the average number of dogs and cats per household for every state.
+
+--
+
+```{r}
+knitr::kable(CatvDog_Data_Stats, format = 'html',
+             col.names = c("File Name", "Mean Cat Population", "Mean Dog Population", "Average Cats per Household", "Average Dogs per Household")) %>%
+  kable_styling(position = "left", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE, border_right = TRUE, color = "black", background = "lightgrey") %>%
+  row_spec(0, background  = "turquoise")
+```
+
+--
+
+- Cats have a larger overall population despite having less households.
+
+--
+
+- People seem to own around 1-2 cats and 2 dogs per household.
+
+---
+# Cat vs. Dogs
+
+- Which do you prefer?
+
+  - Cats?
+  
+  
+  - Dogs?
+  
+  
+  - Both?
+  
+  
+  - Neither?
